@@ -1,6 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
-from typing import NamedTuple
+from typing import NamedTuple, Dict
 
 from hearthstone.enums import CardClass, Race, CardType, CardSet, Rarity
 
@@ -78,9 +78,9 @@ class Cards:
             return f.read()
 
     @classmethod
-    def all_cards(cls):
+    def all_cards(cls) -> Dict[int, Card]:
         if not hasattr(cls, '_cards'):
             xml = ET.fromstring(cls.get_card_defs_contents())
             assert xml.tag == 'CardDefs'
-            cls._cards = [Card.from_entity(entity) for entity in xml]
+            cls._cards = {card.id: card for card in map(Card.from_entity, xml)}
         return cls._cards

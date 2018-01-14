@@ -111,7 +111,7 @@ def test_card_has_correct_attrib(name, expected):
 
 
 def test_cards_can_load_multiple_cards():
-    assert TestingCards.all_cards() == [
-        Card.from_entity(example_card),
-        Card.from_entity(empty_card)
-    ]
+    assert TestingCards.all_cards() == {
+        42: Card.from_entity(example_card),
+        0: Card.from_entity(empty_card)
+    }
