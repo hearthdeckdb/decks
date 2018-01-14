@@ -3,10 +3,17 @@ import xml.etree.ElementTree as ET
 import pytest
 from hearthstone.enums import CardClass, Race, CardType, Rarity, CardSet
 
-from cards.model import Card
 from cards.fields import FromTag, BoolFromTag, FromAttrib
+from cards.model import Card, Cards
 
 empty_card = ET.fromstring('''<Entity CardID="" ID="0"/>''')
+
+
+class TestingCards(Cards):
+    @classmethod
+    def get_card_defs_contents(cls):
+        return '<CardDefs>{}{}</CardDefs>'.format(ET.tostring(example_card), ET.tostring(empty_card))
+
 
 example_card = ET.fromstring('''<Entity CardID="CARD_ID" ID="42" version="2">
     <Tag enumID="185" name="CARDNAME" type="LocString">
@@ -101,3 +108,10 @@ def test_from_tag_bool_set_true_if_tag_value_is_1():
 def test_card_has_correct_attrib(name, expected):
     card = Card.from_entity(example_card)
     assert getattr(card, name) == expected
+
+
+def test_cards_can_load_multiple_cards():
+    assert TestingCards.all_cards() == [
+        Card.from_entity(example_card),
+        Card.from_entity(empty_card)
+    ]

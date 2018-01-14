@@ -1,8 +1,10 @@
+import os
 import xml.etree.ElementTree as ET
 from typing import NamedTuple
 
 from hearthstone.enums import CardClass, Race, CardType, CardSet, Rarity
 
+import config
 from cards.fields import ParseField, BoolFromTag, IntFromTag, EnumFromTag, LocStringFromTag, FromAttrib
 
 
@@ -70,4 +72,15 @@ class Card(metaclass=CardMeta):
 
 
 class Cards:
-    pass
+    @classmethod
+    def get_card_defs_contents(cls):
+        with open(os.path.join(config.ASSETS_PATH, 'CardDefs.xml')) as f:
+            return f.read()
+
+    @classmethod
+    def all_cards(cls):
+        if not hasattr(cls, '_cards'):
+            xml = ET.fromstring(cls.get_card_defs_contents())
+            assert xml.tag == 'CardDefs'
+            cls._cards = [Card.from_entity(entity) for entity in xml]
+        return cls._cards
