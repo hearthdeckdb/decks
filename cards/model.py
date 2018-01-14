@@ -1,6 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
-from typing import NamedTuple, Dict
+from typing import NamedTuple, Dict, Tuple
 
 from hearthstone.enums import CardClass, Race, CardType, CardSet, Rarity
 
@@ -43,7 +43,7 @@ class Card(metaclass=CardMeta):
     rarity = EnumFromTag('RARITY', Rarity)
 
     @property
-    def craftable(self):
+    def craftable(self) -> bool:
         if isinstance(self.card_set, CardSet) and not self.card_set.craftable:
             return False
         if not self.type.craftable:
@@ -53,19 +53,19 @@ class Card(metaclass=CardMeta):
         return True
 
     @property
-    def crafting_costs(self):
+    def crafting_costs(self) -> Tuple[int, int]:
         if not self.craftable:
             return 0, 0
         return self.rarity.crafting_costs
 
     @property
-    def disenchant_costs(self):
+    def disenchant_costs(self) -> Tuple[int, int]:
         if not self.craftable:
             return 0, 0
         return self.rarity.disenchant_costs
 
     @property
-    def max_count_in_deck(self):
+    def max_count_in_deck(self) -> int:
         if self.rarity == Rarity.LEGENDARY:
             return 1
         return 2
