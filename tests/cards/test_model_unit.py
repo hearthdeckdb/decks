@@ -3,7 +3,8 @@ import xml.etree.ElementTree as ET
 import pytest
 from hearthstone.enums import CardClass, Race, CardType, Rarity, CardSet
 
-from cards.model import Card, BoolFromTag, FromTag, FromAttrib
+from cards.model import Card
+from cards.fields import FromTag, BoolFromTag, FromAttrib
 
 empty_card = ET.fromstring('''<Entity CardID="" ID="0"/>''')
 
