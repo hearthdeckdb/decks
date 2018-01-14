@@ -78,6 +78,14 @@ attrib_test_data = [
     ('inhand', '-2 Attack this turn.')
 ]
 
+attrib_test_data_raw = [
+    ('card_id', 'CARD_ID'),
+    ('id', 42),
+    ('collectable', True),
+    ('card_class', CardClass.NEUTRAL.value),
+    ('inhand', '-2 Attack this turn.')
+]
+
 
 def test_from_attrib_parse_attrib():
     fa = FromAttrib('the_attrib', int)
@@ -104,10 +112,16 @@ def test_from_tag_bool_set_true_if_tag_value_is_1():
     assert b.parse_entity(ET.fromstring('<Entity><Tag name="the_bool_tag" value="1" /></Entity>')) is True
 
 
-@pytest.mark.parametrize("name,expected", attrib_test_data)
+@pytest.mark.parametrize("name,expected", attrib_test_data_raw)
 def test_card_has_correct_attrib(name, expected):
     card = Card.from_entity(example_card)
     assert getattr(card, name) == expected
+
+
+@pytest.mark.parametrize("name,expected", attrib_test_data)
+def test_card_has_correct_dict_from_attribs(name, expected):
+    card = Card.from_entity(example_card)
+    assert card.dict[name] == expected
 
 
 def test_cards_can_load_multiple_cards():
