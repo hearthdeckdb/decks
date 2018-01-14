@@ -67,3 +67,7 @@ class Card(metaclass=CardMeta):
         if self.rarity == Rarity.LEGENDARY:
             return 1
         return 2
+
+
+class Cards:
+    pass

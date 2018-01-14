@@ -2,6 +2,7 @@ language: python
 python:
   - "3.6"
 install:
+  - ./update_assets.sh
   - python -m pip install -r requirements-test.txt
 script:
   - python -m pytest

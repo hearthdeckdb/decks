@@ -1,6 +1,9 @@
 .idea
 .env
 
+assets/CardDefs.xml
+assets/GLOBAL.txt
+
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
